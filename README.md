@@ -1,89 +1,86 @@
-# Project AURA website
+<p align="center">
+  <img src="assets/aura-logo.webp" alt="Project AURA — Advanced UV and Risk-prediction Assistant" width="480">
+</p>
 
-A static, GitHub Pages-ready project website for **Project AURA**, developed by **SUPERCHARGED**. It is based on the supplied presentation script and uses the supplied project and team logos. No build tools, server, sign-in, analytics or API keys are required for the website itself.
+<h1 align="center">PROJECT AURA</h1>
+<p align="center"><strong>Advanced UV &amp; Risk-prediction Assistant</strong><br>Developed by <strong>SUPERCHARGED</strong></p>
+<p align="center"><em>Your Health. Your Future. Your AURA.</em></p>
 
-The website contains two interactive, standalone AURA digital-twin demos and a downloadable prototype kit. The large wearable image on the homepage is an **AI-generated concept illustration**, not a photograph of the prototype. The genuine build photos, video and letters are intentionally marked “coming soon” until you add them.
+---
 
-## 1. Preview on your computer
+## The idea
 
-Open `index.html` in a browser, keeping all of the files and folders together. Most features also work from the file itself. For a local web server, run the following in this folder and open the printed URL:
+**What if your wrist could become your personal health-awareness companion?**
 
-```sh
-python3 -m http.server 8000
-```
+Project AURA is an experimental wearable prototype exploring how UV exposure, vital indicators and timely alerts can be brought together in one easy-to-understand experience. It pairs an ESP32-based wearable with interactive smartwatch and mobile-app digital twins.
 
-The website and demos show simulated examples by default. GitHub Pages is static and cannot run the optional Python bridge; to connect to the ESP32 over Wi-Fi, download the prototype kit and follow its local bridge instructions on your own computer. USB Web Serial also requires a compatible browser, a suitable secure context and explicit user permission. The physical hardware has not been tested.
+AURA is designed to support awareness and encourage informed everyday decisions—not to replace a doctor or provide a medical diagnosis.
 
-## 2. Publish on GitHub Pages
+## The gap
 
-1. Download the website ZIP and **extract it** on your computer. Keep all folders and files together.
-2. Sign in to [GitHub](https://github.com/). Create a new repository, for example `project-aura`. For GitHub Free, choose a **public** repository for Pages.
-3. In the repository, choose **Add file → Upload files**. Upload the **contents of the extracted website folder**, not the ZIP itself and not an extra parent folder. Drag the `assets`, `demo`, and `downloads` folders and the loose files (`index.html`, `styles.css`, `site-content.js`, `app.js`, `README.md`) into GitHub's upload area. Commit the changes to the `main` branch. When done, `index.html` must be visible at the repository's top level, alongside `assets`, `demo` and `downloads`.
-4. Open the repository's **Settings → Pages**. Under **Build and deployment**, select **Deploy from a branch**. Select **main** and **/ (root)**, then click **Save**.
-5. Wait for deployment and check the address shown on the Pages settings screen. For a repository named `project-aura`, it will normally be:
+People who spend long hours outdoors, such as delivery riders, street vendors and construction workers, experience changing sunlight and other conditions throughout the day. AURA explores how a wearable could offer a more personal, on-the-spot reminder to check in with those signals.
 
-   `https://YOUR-GITHUB-USERNAME.github.io/project-aura/`
+The International Labour Organization estimates that at least **2.41 billion workers** are exposed to excessive heat at work each year. [Read the ILO report](https://www.ilo.org/sites/default/files/2024-04/ILO%20OSH%20report%202024%20at%20a%20glance.pdf).
 
-   Replace the username with your own. GitHub uses a different root URL if your repository is named exactly `YOUR-GITHUB-USERNAME.github.io`.
+AURA does **not** measure heat stress and cannot replace shade, water, rest, appropriate workplace protections or medical care.
 
-Official instructions: [Create a GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site) · [Configure a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) · [Upload files](https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository).
+## Key features
 
-## 3. Add your prototype photos
+| Feature | What AURA explores |
+|---|---|
+| **UV exposure tracking** | Estimated UV levels and time spent exposed to sunlight. |
+| **Vital indicators** | Experimental heart-rate, SpO₂ and sensor-temperature readings. |
+| **Skin sensitivity** | Standard and sensitive modes with different UV-related rules and sunscreen reminders. |
+| **Composite safety score** | A rule-based demo score bringing several indicators together in one overview. |
+| **Wrist and mobile alerts** | On-wrist alerts and connected-dashboard notifications while the page is open. |
+| **One-touch interaction** | Touch controls for acknowledging alerts and navigating the wearable. |
+| **Standalone edge safety** | Essential alert rules designed to run on the wearable without a constant phone connection. |
+| **Wi-Fi and USB serial** | Two-way links between the wearable and compatible dashboard interfaces. |
+| **Battery awareness** | An approximate voltage-based battery estimate using a verified resistor divider. |
 
-The file `site-content.js` is the small content editor for the website. You can edit it locally and upload it again, or edit it directly on GitHub using the pencil icon. Each GitHub edit/upload must be **committed**, and Pages may take a little while to update.
+## Understanding the composite score
 
-1. Upload a photo, for example `build-1.jpg`, into the repository folder `assets/media/`. Keep names simple; paths and capital letters must match exactly.
-2. Open `site-content.js` and replace the empty `photos` list with an entry, for example:
+The demonstration score starts at **100** and subtracts penalties for estimated UV exposure, sunscreen timing and readings outside configured heart-rate, SpO₂ or temperature thresholds. A further penalty can apply when certain UV and temperature or heart-rate conditions occur together.
 
-```js
-  photos: [
-    { src: 'assets/media/build-1.jpg', alt: 'Working on the AURA circuit', title: 'Building AURA', caption: 'Testing the first circuit.' },
-    { src: 'assets/media/wrist.jpg', alt: 'AURA prototype on a wrist', title: 'On the wrist', caption: 'Trying the wearable form.' }
-  ],
-```
+| Demo score | Displayed band |
+|---|---|
+| 80–100 | Optimal |
+| 55–79 | Caution |
+| 0–54 | High Risk |
 
-3. Commit the edited file. Your photos replace the numbered “coming soon” gallery cards in order. Extra photos create extra cards; unfilled spaces remain honest placeholders. Use real alt text and captions that describe your own photos.
+If valid heart-rate, SpO₂ or temperature data is missing, the prototype displays **No Data** instead of a score. The score is a demonstration rule set, not a clinically validated measure of personal risk.
 
-## 4. Add a prototype video
+## Prototype components
 
-Option A: upload a small `.mp4` file into `assets/media/`, then change `video: null,` to:
+The project is built around an **ESP32-C3 SuperMini**, with an ACEBOTT UV sensor, MAX30102 heart-rate/SpO₂ module, DS18B20 temperature sensor, TTP223R touch sensor, yellow-and-blue OLED, vibration motor and buzzer. A LiPo battery, TP4056 charger, boost converter and switch form the proposed power system.
 
-```js
-  video: { type: 'file', url: 'assets/media/aura-demo.mp4', title: 'AURA prototype demonstration' },
-```
+The TP4056 charges the cell but does **not** report battery percentage. The ESP32 can estimate it from voltage when a suitable, verified resistor divider is installed. The sensor temperature is **not** a measurement of core body temperature.
 
-Option B: upload your video to YouTube and use its actual watch/share URL:
+## Project experience
 
-```js
-  video: { type: 'youtube', url: 'https://www.youtube.com/watch?v=YOUR_VIDEO_ID', title: 'AURA prototype demonstration' },
-```
+The website presents AURA's story alongside two interactive digital twins: **Companion** and **Studio**. They can demonstrate scenarios using simulated values. The website's wearable image is an AI-illustrated concept, not a photograph of the physical prototype.
 
-Replace `YOUR_VIDEO_ID` with the actual 11-character ID, or paste the complete real YouTube share URL. YouTube videos appear in an embedded player and require network access; make sure your audience is permitted to view the video. GitHub's browser upload is limited to **25 MB per file**, so a video host is often easier for a larger video. Only use videos that you have permission to publish.
+- [Website source](index.html)
+- [Companion digital-twin source](demo/companion.html)
+- [Studio digital-twin source](demo/studio.html)
+- [Prototype kit: firmware, wiring guide and demos](downloads/project-aura-prototype-kit.zip)
 
-## 5. Add LOR, LOA and other documents
+Build photographs, a prototype video and supporting project documents will be added when available.
 
-1. Check the letters for signatures, personal contact details and any other information that should remain private. A public website is visible to everyone. Get permission before publishing a letter written by someone else.
-2. Upload your PDF, for example `lor.pdf`, into `assets/media/`.
-3. In `site-content.js`, enter the matching path:
+## Project status & safety
 
-```js
-  documents: [
-    { title: 'LOR', url: 'assets/media/lor.pdf' },
-    { title: 'LOA', url: '' },
-    { title: 'Additional project document', url: 'assets/media/project-document.pdf' }
-  ]
-```
+The firmware has compiled and the browser demos have been tested with simulated interfaces. **The physical hardware, wiring, sensor readings and alert accuracy have not yet been validated.** UV, SpO₂, temperature, battery and score values are experimental estimates; an unwired UV sensor may not be reliably detected.
 
-An empty URL remains “COMING SOON”; when a valid path is entered, it becomes a link. Use the exact filename and capitalization. The website cannot confirm that an entered file exists, so test each link after publishing.
+AURA is an experimental prototype—not a medical device, a sun-safety guarantee or a substitute for professional advice.
 
-## 6. Change text or the hero image
+## One team. One vision.
 
-Edit `index.html` for the presentation copy and `styles.css` for the design. The actual team and project logos live in `assets/`. If you replace the concept image with a real photo, update the image `src`, descriptive `alt` text and the visible “AI-illustrated / Not the physical prototype” caption in `index.html` so the page remains truthful.
+<p align="center"><img src="assets/supercharged-logo.webp" alt="SUPERCHARGED team logo" width="240"></p>
 
-## Project and safety notes
+**SUPERCHARGED** is a one-member team with a vision to make technology more personal and everyday awareness more accessible.
 
-- AURA is an **experimental prototype**, not a medical device. The score, UV mapping, SpO₂, sensor temperature and alert thresholds are unvalidated. The DS18B20 is not a core-body-temperature sensor.
-- The TP4056 is a charger, not a percentage sensor. The optional battery percentage is a voltage-based estimate requiring a verified two-resistor divider. Follow the included hardware guide before making a connection. Switch the load off during charging with the documented simple power setup.
-- The website's score examples are simulated. Connected-dashboard alerts require that page to be open; the project does not provide background push notifications.
-- The ILO source for the worker-exposure statistic is linked on the page. Mention of SDG 3 does not imply UN endorsement.
-- `assets/aura-logo.webp`, `assets/aura-mark.webp`, and `assets/supercharged-logo.webp` are optimized derivatives of the logos supplied for this project. `assets/aura-concept.webp` is an AI-generated illustrative concept. The included DM Sans and Space Grotesk font files are distributed under the SIL Open Font License; license texts are in `assets/fonts/`.
+Project AURA is inspired by **United Nations Sustainable Development Goal 3: Good Health and Well-Being**. It is an independent project; no UN endorsement is implied.
+
+---
+
+<p align="center"><strong>PROJECT AURA × SUPERCHARGED</strong><br><em>Your Health. Your Future. Your AURA.</em></p>
